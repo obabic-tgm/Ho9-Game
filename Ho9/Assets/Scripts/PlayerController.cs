@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private int moveSpeed;
     private Animator animator;
     private CharState currentState;
+    private RaycastHit2D[] boxCast;
     private CharState lastState;
 
     //Health
@@ -27,6 +28,11 @@ public class PlayerController : MonoBehaviour
     bool punch;
     bool block;
 
+    bool punchCooldown;
+
+    //BoxCastAll Punchvektor
+    Vector2 punchVector;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +40,8 @@ public class PlayerController : MonoBehaviour
         playerRB = GetComponent<Rigidbody2D>();
         lastState = currentState = (CharState)animator.GetInteger("state");
         moveSpeed = 8;
+        punchVector = new Vector2(2, 0.2f);
+        punchCooldown = false;
     }
 
     // Update is called once per frame
@@ -66,7 +74,7 @@ public class PlayerController : MonoBehaviour
                 playerRB.transform.position += new Vector3(-1 * Time.deltaTime * moveSpeed, 0, 0);
             }
 
-            if (punch)
+            if (punch && punchCooldown == false)
             {
                 StartCoroutine(PlayerPunch());
                 Debug.Log("Punch");
@@ -104,7 +112,7 @@ public class PlayerController : MonoBehaviour
                 playerRB.transform.position += new Vector3(-1 * Time.deltaTime * moveSpeed, 0, 0);
             }
 
-            if (punch)
+            if (punch && punchCooldown == false)
             {
                 StartCoroutine(PlayerPunch());
                 Debug.Log("Punch");
@@ -124,21 +132,53 @@ public class PlayerController : MonoBehaviour
     }
     public IEnumerator PlayerPunch()
     {
+        punchCooldown = true;
         //do punch
         currentState = CharState.Punch;
-        gameObject.transform.GetChild(0).gameObject.GetComponent<BoxCollider2D>().enabled = true;
+        if(tag == "Player1")
+        {
+            boxCast = Physics2D.BoxCastAll(new Vector2(transform.position.x+1, transform.position.y), punchVector, 0, transform.forward, punchVector.x);
+        }
+        if(tag == "Player2")
+        {
+            boxCast = Physics2D.BoxCastAll(new Vector2(transform.position.x-1, transform.position.y), punchVector, 0, transform.forward, punchVector.x);
+        }
+        for(int i = 0; i < boxCast.Length; i++)
+        {
+            if (tag == "Player1")
+            {
+                if (boxCast[i].rigidbody.gameObject.tag == "Player2")
+                {
+                    GameObject.FindGameObjectWithTag("Player2").GetComponent<PlayerController>().DamagePlayer(10);
+                }
+            }
+
+            if (tag == "Player2")
+            {
+                if (boxCast[i].rigidbody.gameObject.tag == "Player1")
+                {
+                    GameObject.FindGameObjectWithTag("Player1").GetComponent<PlayerController>().DamagePlayer(10);
+                }
+            }
+        }
+        //gameObject.transform.GetChild(0).gameObject.GetComponent<BoxCollider2D>().enabled = true;
         yield return new WaitForSeconds(0.2f);
-        //currentState = CharState.Idle;
-        gameObject.transform.GetChild(0).gameObject.GetComponent<BoxCollider2D>().enabled = false;
+        currentState = CharState.Idle;
+        punchCooldown = false;
+        //gameObject.transform.GetChild(0).gameObject.GetComponent<BoxCollider2D>().enabled = false;
     }
 
     private void DamagePlayer(float damage)
     {
-        curHealth -= damage;
-        healthBarImage.fillAmount = (curHealth / 100);
-        gameObject.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
+        if(block == false)
+        {
+            curHealth -= damage;
+            healthBarImage.fillAmount = (curHealth / 100);
+            gameObject.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
+        }
     }
 
+    /*
     void OnTriggerEnter2D(Collider2D col)
     {
         Debug.Log("Player1 trying punching Player2");
@@ -161,6 +201,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    */
 
     private void HandleAnims()
     {
@@ -171,5 +212,13 @@ public class PlayerController : MonoBehaviour
             lastState = currentState;
         }
 
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Matrix4x4 oldMatrix = Gizmos.matrix;
+        if(tag == "Player1") Gizmos.DrawWireCube(new Vector2(transform.position.x + 1, transform.position.y), punchVector);
+        if(tag == "Player2") Gizmos.DrawWireCube(new Vector2(transform.position.x - 1, transform.position.y), punchVector);
+        Gizmos.matrix = oldMatrix;
     }
 }
