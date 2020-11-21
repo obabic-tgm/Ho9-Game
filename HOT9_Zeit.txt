@@ -12,5 +12,6 @@
 05.11.2020 - 5h - Player Hitboxfarben zur unterscheidung geändert. Einfügen einer Block-Mechanic. Zusammenfügen von Assets und Particle Effects
 12.11.2020 - 3h - Projektbesprechung, aktuellen Stand übermittelt, als auch Aufgaben bis zum 26.11 ausgemacht
 13.11.2020 - 3h - Unityprojekt auf Github hochgeladen; Trelloboard individuellen Aufgaben aktualisiert; Bugfix Playerpunch - BoxCastAll implementiert
+21.11.2020 - 3h - Unityprojekt für WebGL exportiert, Nach "Fighting Game" üblichen Mechaniken rechachiert: Funktionsweisen und Mindestanzahl festgesetzt (Skizzen)
 ---------------------------------------
-49 - Gesamt
+52 - Gesamt
