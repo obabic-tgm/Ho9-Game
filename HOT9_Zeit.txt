@@ -1,0 +1,16 @@
+16.09.2020 - 4h - Projektcontrolling - Betreuer/innen klarstellen, Hauptverantwortlichen wählen. An Projektantrag schreiben.
+16.09.2020 - 3h - Präsentation auf Powerpoint erstellt, als auch aufgenommen.
+17.09.2020 - 4h - Projektantrag besprechen bzw. schreiben.
+18.09.2020 - 2h - Projektantrag-Version 1.0 fertiggestellt und eingereicht.
+24.09.2020 - 4h - Projektantrag verbessern, Recherche an Hitboxen.
+01.10.2020 - 4h - ITP Machbarkeitsanalyse Besprechung; Projektbesprechung mit Betreuer, Aufteilung der Aufgaben - Unity 2D Spiel mit Boxen, Steuerung, Health
+02.10.2020 - 3h - Unity Projekt erstellt, als auch Dummy-Sprites; Spieler controlls erstellt und grundsätzliche funktionsweise implementiert.
+07.10.2020 - 3h - An Player Movement gearbeitet (Links- & Rechtsbewegung)
+08.10.2020 - 5h - Healthbar erstellt, zweite Spieler Steuerung; 2 Animations - Idle und Punch; Zeitaufzeichnung für dieses Projekt "aufgeräumt"
+14.10.2020 - 2h - Projektbesprechung - weitere Schritte & nächste Projektbesprechung geplant (bis 05.11 weitere Gamemechanics + Animations)
+22.10.2020 - 4h - Ausarbeitung der Fragestellung, Recherchiert zum Thema Hitboxes und weiteren "Fighting Game"-Mechaniken
+05.11.2020 - 5h - Player Hitboxfarben zur unterscheidung geändert. Einfügen einer Block-Mechanic. Zusammenfügen von Assets und Particle Effects
+12.11.2020 - 3h - Projektbesprechung, aktuellen Stand übermittelt, als auch Aufgaben bis zum 26.11 ausgemacht
+13.11.2020 - 3h - Unityprojekt auf Github hochgeladen; Trelloboard individuellen Aufgaben aktualisiert; Bugfix Playerpunch - BoxCastAll implementiert
+---------------------------------------
+49 - Gesamt
