@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
         playerRB = GetComponent<Rigidbody2D>();
         lastState = currentState = (CharState)animator.GetInteger("state");
         moveSpeed = 8;
-        punchVector = new Vector2(2, 0.2f);
+        punchVector = new Vector2(1, 0.2f);
         punchCooldown = false;
     }
 
@@ -49,10 +49,6 @@ public class PlayerController : MonoBehaviour
     {
         HandleAnims();
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            DamagePlayer(10);
-        }
         if (gameObject.tag == "Player1")
         {
             //Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D>(), GameObject.FindGameObjectWithTag("Player2").GetComponent<BoxCollider2D>());
@@ -91,7 +87,7 @@ public class PlayerController : MonoBehaviour
                 currentState = CharState.Idle;
             }
         }
-        if(gameObject.tag == "Player2")
+        if (gameObject.tag == "Player2")
         {
             //Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D>(), GameObject.FindGameObjectWithTag("Player1").GetComponent<BoxCollider2D>());
 
@@ -124,7 +120,7 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Block");
             }
 
-            if(!right && !left && !punch && !block)
+            if (!right && !left && !punch && !block)
             {
                 currentState = CharState.Idle;
             }
@@ -135,21 +131,21 @@ public class PlayerController : MonoBehaviour
         punchCooldown = true;
         //do punch
         currentState = CharState.Punch;
-        if(tag == "Player1")
+        if (tag == "Player1")
         {
-            boxCast = Physics2D.BoxCastAll(new Vector2(transform.position.x+1, transform.position.y), punchVector, 0, transform.forward, punchVector.x);
+            boxCast = Physics2D.BoxCastAll(new Vector2(transform.position.x + 0.5f, transform.position.y), punchVector, 0, transform.forward, punchVector.x);
         }
-        if(tag == "Player2")
+        if (tag == "Player2")
         {
-            boxCast = Physics2D.BoxCastAll(new Vector2(transform.position.x-1, transform.position.y), punchVector, 0, transform.forward, punchVector.x);
+            boxCast = Physics2D.BoxCastAll(new Vector2(transform.position.x - 0.5f, transform.position.y), punchVector, 0, transform.forward, punchVector.x);
         }
-        for(int i = 0; i < boxCast.Length; i++)
+        for (int i = 0; i < boxCast.Length; i++)
         {
             if (tag == "Player1")
             {
                 if (boxCast[i].rigidbody.gameObject.tag == "Player2")
                 {
-                    GameObject.FindGameObjectWithTag("Player2").GetComponent<PlayerController>().DamagePlayer(10);
+                    GameObject.FindGameObjectWithTag("Player2").GetComponent<PlayerController>().DamagePlayer(5);
                 }
             }
 
@@ -157,7 +153,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (boxCast[i].rigidbody.gameObject.tag == "Player1")
                 {
-                    GameObject.FindGameObjectWithTag("Player1").GetComponent<PlayerController>().DamagePlayer(10);
+                    GameObject.FindGameObjectWithTag("Player1").GetComponent<PlayerController>().DamagePlayer(5);
                 }
             }
         }
@@ -170,38 +166,13 @@ public class PlayerController : MonoBehaviour
 
     private void DamagePlayer(float damage)
     {
-        if(block == false)
+        if (block == false)
         {
             curHealth -= damage;
             healthBarImage.fillAmount = (curHealth / 100);
             gameObject.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
         }
     }
-
-    /*
-    void OnTriggerEnter2D(Collider2D col)
-    {
-        Debug.Log("Player1 trying punching Player2");
-        if (gameObject.tag == "Player1")
-        {
-            if(col.tag == "Player2Hit" && block == false)
-            {
-                DamagePlayer(10);
-                Debug.Log("Take Damage");
-            }
-        }
-
-        if (gameObject.tag == "Player2")
-        {
-            //Debug.Log("Player1 trying punching Player2");
-            if (col.tag == "Player1Hit" && block == false)
-            {
-                DamagePlayer(10);
-                Debug.Log("Take Damage");
-            }
-        }
-    }
-    */
 
     private void HandleAnims()
     {
@@ -217,8 +188,8 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.color = Color.blue;
         Matrix4x4 oldMatrix = Gizmos.matrix;
-        if(tag == "Player1") Gizmos.DrawWireCube(new Vector2(transform.position.x + 1, transform.position.y), punchVector);
-        if(tag == "Player2") Gizmos.DrawWireCube(new Vector2(transform.position.x - 1, transform.position.y), punchVector);
+        if (tag == "Player1") Gizmos.DrawWireCube(new Vector2(transform.position.x + 0.5f, transform.position.y), punchVector);
+        if (tag == "Player2") Gizmos.DrawWireCube(new Vector2(transform.position.x - 0.5f, transform.position.y), punchVector);
         Gizmos.matrix = oldMatrix;
     }
 }
