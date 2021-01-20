@@ -169,6 +169,10 @@ public class PlayerController : MonoBehaviour
         if (block == false)
         {
             curHealth -= damage;
+
+            //Plays hitSound!
+            SoundManagerScript.PlaySound("playerHit");
+
             healthBarImage.fillAmount = (curHealth / 100);
             gameObject.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
         }
