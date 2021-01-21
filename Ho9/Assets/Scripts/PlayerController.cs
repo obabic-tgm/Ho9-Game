@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
 
     bool punchCooldown;
 
+    public GameObject restartButton;
+
     //BoxCastAll Punchvektor
     [SerializeField]
     public Vector2 punchVector;
@@ -48,6 +50,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        RestartGame();
         HandleAnims();
 
         if (gameObject.tag == "Player1")
@@ -200,5 +203,13 @@ public class PlayerController : MonoBehaviour
         if (tag == "Player1") Gizmos.DrawWireCube(new Vector2(transform.position.x + 0.5f, transform.position.y), punchVector);
         if (tag == "Player2") Gizmos.DrawWireCube(new Vector2(transform.position.x - 0.5f, transform.position.y), punchVector);
         Gizmos.matrix = oldMatrix;
+    }
+
+    private void RestartGame()
+    {
+        if(curHealth <= 0)
+        {
+            restartButton.SetActive(true);
+        }
     }
 }
