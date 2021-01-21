@@ -31,7 +31,8 @@ public class PlayerController : MonoBehaviour
     bool punchCooldown;
 
     //BoxCastAll Punchvektor
-    Vector2 punchVector;
+    [SerializeField]
+    public Vector2 punchVector;
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +41,7 @@ public class PlayerController : MonoBehaviour
         playerRB = GetComponent<Rigidbody2D>();
         lastState = currentState = (CharState)animator.GetInteger("state");
         moveSpeed = 8;
-        punchVector = new Vector2(1, 0.2f);
+        punchVector = new Vector2(1.7f, 0.4f);
         punchCooldown = false;
     }
 
@@ -175,6 +176,10 @@ public class PlayerController : MonoBehaviour
 
             healthBarImage.fillAmount = (curHealth / 100);
             gameObject.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
+        }
+        else
+        {
+            SoundManagerScript.PlaySound("blockHit");
         }
     }
 
