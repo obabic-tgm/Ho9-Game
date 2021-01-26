@@ -28,13 +28,21 @@ public class PlayerController : MonoBehaviour
     bool punch;
     bool block;
 
+    bool jump;
+
     bool punchCooldown;
 
     public GameObject restartButton;
 
+    public GameObject ground;
+    private bool grounded;
+    public float bonusGravity;
+
     //BoxCastAll Punchvektor
     [SerializeField]
     public Vector2 punchVector;
+    public float jumpVel;
+    public float fallVel;
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +53,7 @@ public class PlayerController : MonoBehaviour
         moveSpeed = 8;
         punchVector = new Vector2(1.7f, 0.4f);
         punchCooldown = false;
+        grounded = false;
     }
 
     // Update is called once per frame
@@ -52,6 +61,7 @@ public class PlayerController : MonoBehaviour
     {
         RestartGame();
         HandleAnims();
+        Jump();
 
         if (gameObject.tag == "Player1")
         {
@@ -168,6 +178,11 @@ public class PlayerController : MonoBehaviour
         //gameObject.transform.GetChild(0).gameObject.GetComponent<BoxCollider2D>().enabled = false;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject == ground) grounded = true;
+    }
+
     private void DamagePlayer(float damage)
     {
         if (block == false)
@@ -210,6 +225,41 @@ public class PlayerController : MonoBehaviour
         if(curHealth <= 0)
         {
             restartButton.SetActive(true);
+        }
+    }
+
+    public void Jump()
+    {
+        if(playerRB.velocity.y < 0)
+        { 
+            playerRB.gravityScale = fallVel;
+        } else
+        {
+            playerRB.gravityScale = 1;
+        }
+
+        if (grounded)
+        {
+            if (gameObject.tag == "Player1")
+            {
+                jump = Input.GetKeyDown(KeyCode.Space);
+
+                if (jump)
+                {
+                    grounded = false;
+                    playerRB.AddForce(Vector2.up * jumpVel, ForceMode2D.Impulse);
+                }
+            }
+            if (gameObject.tag == "Player2")
+            {
+                jump = Input.GetKeyDown(KeyCode.DownArrow);
+
+                if (jump)
+                {
+                    grounded = false;
+                    playerRB.AddForce(Vector2.up * jumpVel, ForceMode2D.Impulse);
+                }
+            }
         }
     }
 }

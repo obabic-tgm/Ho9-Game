@@ -9,6 +9,7 @@ TagManager:
   - Player1Hit
   - Player2Hit
   - Button
+  - Ground
   layers:
   - Default
   - TransparentFX
