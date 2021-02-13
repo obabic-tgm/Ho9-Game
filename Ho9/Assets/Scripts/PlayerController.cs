@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    protected enum CharState { Idle, Run, Punch, Block };
+    protected enum CharState { Idle, Run, Punch, Block, Jump, Fall, Hit, Death };
 
     Rigidbody2D playerRB;
     Vector3 Move;
-    private int moveSpeed;
+    public int moveSpeed;
     private Animator animator;
     private CharState currentState;
     private RaycastHit2D[] boxCast;
@@ -28,21 +28,27 @@ public class PlayerController : MonoBehaviour
     bool punch;
     bool block;
 
-    bool jump;
-
     bool punchCooldown;
+
+    bool alive;
 
     public GameObject restartButton;
 
     public GameObject ground;
-    private bool grounded;
     public float bonusGravity;
 
     //BoxCastAll Punchvektor
     [SerializeField]
     public Vector2 punchVector;
+    public Vector2 punchVectorPosition;
     public float jumpVel;
     public float fallVel;
+
+    public bool flipped;
+    public bool isFalling;
+    public bool jumpKey;
+    public bool isJumping;
+    public bool isGrounded;
 
     // Start is called before the first frame update
     void Start()
@@ -50,10 +56,11 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         playerRB = GetComponent<Rigidbody2D>();
         lastState = currentState = (CharState)animator.GetInteger("state");
-        moveSpeed = 8;
-        punchVector = new Vector2(1.7f, 0.4f);
         punchCooldown = false;
-        grounded = false;
+        isGrounded = false;
+        flipped = false;
+        isFalling = false;
+        alive = true;
     }
 
     // Update is called once per frame
@@ -61,7 +68,16 @@ public class PlayerController : MonoBehaviour
     {
         RestartGame();
         HandleAnims();
-        Jump();
+
+        /*
+        if(currentState == CharState.Hit)
+        {
+            GetComponent<ColorChange>().materialChange(1);
+        }
+        else
+        {
+            GetComponent<ColorChange>().materialChange(0);
+        }*/
 
         if (gameObject.tag == "Player1")
         {
@@ -73,6 +89,9 @@ public class PlayerController : MonoBehaviour
             punch = Input.GetKeyDown(KeyCode.V);
             block = Input.GetKey(KeyCode.B);
 
+            jumpKey = Input.GetKeyDown(KeyCode.Space);
+
+            //Right+Left
             if (right && !block)
             {
                 currentState = CharState.Run;
@@ -84,19 +103,50 @@ public class PlayerController : MonoBehaviour
                 playerRB.transform.position += new Vector3(-1 * Time.deltaTime * moveSpeed, 0, 0);
             }
 
+            //Fall
+            if (playerRB.velocity.y < 0)
+            {
+                playerRB.gravityScale = fallVel;
+                isFalling = true;
+                isJumping = false;
+                currentState = CharState.Fall;
+                if (isGrounded == true)
+                {
+                    Debug.Log("SWITCH!");
+                    currentState = CharState.Idle;
+                }
+            }
+
+            //Jump
+            if (playerRB.velocity.y >= 0)
+            {
+                playerRB.gravityScale = 1;
+                isFalling = false;
+            }
+
+            if (jumpKey && isGrounded)
+            {
+                isJumping = true;
+                Debug.Log("Jump");
+                currentState = CharState.Jump;
+                playerRB.AddForce(Vector2.up * jumpVel, ForceMode2D.Impulse);
+                isGrounded = false;
+            }
+
+            //Punch+Block
             if (punch && punchCooldown == false)
             {
                 StartCoroutine(PlayerPunch());
                 Debug.Log("Punch");
             }
-
             if (block && !left && !right)
             {
                 currentState = CharState.Block;
                 Debug.Log("Block");
             }
 
-            if (!right && !left && !punch && !block)
+            //Idle
+            if (!right && !left && !punch && !block && !isJumping && !isFalling)
             {
                 currentState = CharState.Idle;
             }
@@ -111,6 +161,40 @@ public class PlayerController : MonoBehaviour
             punch = Input.GetKeyDown(KeyCode.Keypad0);
             block = Input.GetKey(KeyCode.KeypadEnter);
 
+            jumpKey = Input.GetKeyDown(KeyCode.DownArrow);
+
+
+            //Fall
+            if (playerRB.velocity.y < 0)
+            {
+                playerRB.gravityScale = fallVel;
+                isFalling = true;
+                isJumping = false;
+                currentState = CharState.Fall;
+                if (isGrounded == true)
+                {
+                    Debug.Log("SWITCH!");
+                    currentState = CharState.Idle;
+                }
+            }
+
+            //Jump
+            if (playerRB.velocity.y >= 0)
+            {
+                playerRB.gravityScale = 1;
+                isFalling = false;
+            }
+
+            if (jumpKey && isGrounded)
+            {
+                isJumping = true;
+                Debug.Log("Jump");
+                currentState = CharState.Jump;
+                playerRB.AddForce(Vector2.up * jumpVel, ForceMode2D.Impulse);
+                isGrounded = false;
+            }
+
+            //Right+Left
             if (right && !block)
             {
                 currentState = CharState.Run;
@@ -122,6 +206,7 @@ public class PlayerController : MonoBehaviour
                 playerRB.transform.position += new Vector3(-1 * Time.deltaTime * moveSpeed, 0, 0);
             }
 
+            //Punch+Block
             if (punch && punchCooldown == false)
             {
                 StartCoroutine(PlayerPunch());
@@ -134,7 +219,8 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Block");
             }
 
-            if (!right && !left && !punch && !block)
+            //Idle
+            if (!right && !left && !punch && !block && !isJumping && !isFalling)
             {
                 currentState = CharState.Idle;
             }
@@ -147,11 +233,11 @@ public class PlayerController : MonoBehaviour
         currentState = CharState.Punch;
         if (tag == "Player1")
         {
-            boxCast = Physics2D.BoxCastAll(new Vector2(transform.position.x + 0.5f, transform.position.y), punchVector, 0, transform.forward, punchVector.x);
+            boxCast = Physics2D.BoxCastAll(new Vector2(transform.position.x + punchVectorPosition.x, transform.position.y + punchVectorPosition.y), punchVector, 0, transform.forward, punchVector.x);
         }
         if (tag == "Player2")
         {
-            boxCast = Physics2D.BoxCastAll(new Vector2(transform.position.x - 0.5f, transform.position.y), punchVector, 0, transform.forward, punchVector.x);
+            boxCast = Physics2D.BoxCastAll(new Vector2(transform.position.x - punchVectorPosition.x, transform.position.y + punchVectorPosition.y), punchVector, 0, transform.forward, punchVector.x);
         }
         for (int i = 0; i < boxCast.Length; i++)
         {
@@ -180,7 +266,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject == ground) grounded = true;
+        if(collision.gameObject == ground) isGrounded = true;
     }
 
     private void DamagePlayer(float damage)
@@ -194,10 +280,23 @@ public class PlayerController : MonoBehaviour
 
             healthBarImage.fillAmount = (curHealth / 100);
             gameObject.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
+            currentState = CharState.Hit;
+            StartCoroutine(DamageEffect());
         }
         else
         {
             SoundManagerScript.PlaySound("blockHit");
+        }
+    }
+
+    public IEnumerator DamageEffect()
+    {
+        for(int i = 0; i < 10; i++)
+        {
+            GetComponent<ColorChange>().materialChange(1);
+            yield return new WaitForSeconds(0.05f);
+            GetComponent<ColorChange>().materialChange(0);
+            yield return new WaitForSeconds(0.05f);
         }
     }
 
@@ -215,8 +314,8 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.color = Color.blue;
         Matrix4x4 oldMatrix = Gizmos.matrix;
-        if (tag == "Player1") Gizmos.DrawWireCube(new Vector2(transform.position.x + 0.5f, transform.position.y), punchVector);
-        if (tag == "Player2") Gizmos.DrawWireCube(new Vector2(transform.position.x - 0.5f, transform.position.y), punchVector);
+        if (tag == "Player1") Gizmos.DrawWireCube(new Vector2(transform.position.x + punchVectorPosition.x, transform.position.y + punchVectorPosition.y), punchVector);
+        if (tag == "Player2") Gizmos.DrawWireCube(new Vector2(transform.position.x - punchVectorPosition.x, transform.position.y + punchVectorPosition.y), punchVector);
         Gizmos.matrix = oldMatrix;
     }
 
@@ -225,6 +324,8 @@ public class PlayerController : MonoBehaviour
         if(curHealth <= 0)
         {
             restartButton.SetActive(true);
+            alive = false;
+            currentState = CharState.Death;
         }
     }
 
@@ -238,25 +339,26 @@ public class PlayerController : MonoBehaviour
             playerRB.gravityScale = 1;
         }
 
-        if (grounded)
+        if (isGrounded)
         {
             if (gameObject.tag == "Player1")
             {
-                jump = Input.GetKeyDown(KeyCode.Space);
+                jumpKey = Input.GetKeyDown(KeyCode.Space);
+                Debug.Log("Jump");
 
-                if (jump)
+                if (jumpKey)
                 {
-                    grounded = false;
+                    isGrounded = false;
                     playerRB.AddForce(Vector2.up * jumpVel, ForceMode2D.Impulse);
                 }
             }
             if (gameObject.tag == "Player2")
             {
-                jump = Input.GetKeyDown(KeyCode.DownArrow);
+                jumpKey = Input.GetKeyDown(KeyCode.DownArrow);
 
-                if (jump)
+                if (jumpKey)
                 {
-                    grounded = false;
+                    isGrounded = false;
                     playerRB.AddForce(Vector2.up * jumpVel, ForceMode2D.Impulse);
                 }
             }
