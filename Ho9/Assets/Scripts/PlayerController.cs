@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
 
     bool alive;
 
+    public GameObject gameManager;
     public GameObject restartButton;
 
     public GameObject ground;
@@ -66,202 +67,43 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(tag + ": " + currentState);
         RestartGame();
         HandleAnims();
-
-        /*
-        if(currentState == CharState.Hit)
-        {
-            GetComponent<ColorChange>().materialChange(1);
-        }
-        else
-        {
-            GetComponent<ColorChange>().materialChange(0);
-        }*/
-
-        if (gameObject.tag == "Player1")
-        {
-            //Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D>(), GameObject.FindGameObjectWithTag("Player2").GetComponent<BoxCollider2D>());
-
-            left = Input.GetKey(KeyCode.A);
-            right = Input.GetKey(KeyCode.D);
-
-            punch = Input.GetKeyDown(KeyCode.V);
-            block = Input.GetKey(KeyCode.B);
-
-            jumpKey = Input.GetKeyDown(KeyCode.Space);
-
-            //Right+Left
-            if (right && !block)
-            {
-                currentState = CharState.Run;
-                playerRB.transform.position += new Vector3(1 * Time.deltaTime * moveSpeed, 0, 0);
-            }
-            if (left && !block)
-            {
-                currentState = CharState.Run;
-                playerRB.transform.position += new Vector3(-1 * Time.deltaTime * moveSpeed, 0, 0);
-            }
-
-            //Fall
-            if (playerRB.velocity.y < 0)
-            {
-                playerRB.gravityScale = fallVel;
-                isFalling = true;
-                isJumping = false;
-                currentState = CharState.Fall;
-                if (isGrounded == true)
-                {
-                    Debug.Log("SWITCH!");
-                    currentState = CharState.Idle;
-                }
-            }
-
-            //Jump
-            if (playerRB.velocity.y >= 0)
-            {
-                playerRB.gravityScale = 1;
-                isFalling = false;
-            }
-
-            if (jumpKey && isGrounded)
-            {
-                isJumping = true;
-                Debug.Log("Jump");
-                currentState = CharState.Jump;
-                playerRB.AddForce(Vector2.up * jumpVel, ForceMode2D.Impulse);
-                isGrounded = false;
-            }
-
-            //Punch+Block
-            if (punch && punchCooldown == false)
-            {
-                StartCoroutine(PlayerPunch());
-                Debug.Log("Punch");
-            }
-            if (block && !left && !right)
-            {
-                currentState = CharState.Block;
-                Debug.Log("Block");
-            }
-
-            //Idle
-            if (!right && !left && !punch && !block && !isJumping && !isFalling)
-            {
-                currentState = CharState.Idle;
-            }
-        }
-        if (gameObject.tag == "Player2")
-        {
-            //Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D>(), GameObject.FindGameObjectWithTag("Player1").GetComponent<BoxCollider2D>());
-
-            left = Input.GetKey(KeyCode.LeftArrow);
-            right = Input.GetKey(KeyCode.RightArrow);
-
-            punch = Input.GetKeyDown(KeyCode.Keypad0);
-            block = Input.GetKey(KeyCode.KeypadEnter);
-
-            jumpKey = Input.GetKeyDown(KeyCode.DownArrow);
-
-
-            //Fall
-            if (playerRB.velocity.y < 0)
-            {
-                playerRB.gravityScale = fallVel;
-                isFalling = true;
-                isJumping = false;
-                currentState = CharState.Fall;
-                if (isGrounded == true)
-                {
-                    Debug.Log("SWITCH!");
-                    currentState = CharState.Idle;
-                }
-            }
-
-            //Jump
-            if (playerRB.velocity.y >= 0)
-            {
-                playerRB.gravityScale = 1;
-                isFalling = false;
-            }
-
-            if (jumpKey && isGrounded)
-            {
-                isJumping = true;
-                Debug.Log("Jump");
-                currentState = CharState.Jump;
-                playerRB.AddForce(Vector2.up * jumpVel, ForceMode2D.Impulse);
-                isGrounded = false;
-            }
-
-            //Right+Left
-            if (right && !block)
-            {
-                currentState = CharState.Run;
-                playerRB.transform.position += new Vector3(1 * Time.deltaTime * moveSpeed, 0, 0);
-            }
-            if (left && !block)
-            {
-                currentState = CharState.Run;
-                playerRB.transform.position += new Vector3(-1 * Time.deltaTime * moveSpeed, 0, 0);
-            }
-
-            //Punch+Block
-            if (punch && punchCooldown == false)
-            {
-                StartCoroutine(PlayerPunch());
-                Debug.Log("Punch");
-            }
-
-            if (block && !left && !right)
-            {
-                currentState = CharState.Block;
-                Debug.Log("Block");
-            }
-
-            //Idle
-            if (!right && !left && !punch && !block && !isJumping && !isFalling)
-            {
-                currentState = CharState.Idle;
-            }
-        }
+        HandleMovement();
     }
-    public IEnumerator PlayerPunch()
+    public void PlayerPunch()
     {
-        punchCooldown = true;
-        //do punch
-        currentState = CharState.Punch;
-        if (tag == "Player1")
+        if (currentState != CharState.Punch)
         {
-            boxCast = Physics2D.BoxCastAll(new Vector2(transform.position.x + punchVectorPosition.x, transform.position.y + punchVectorPosition.y), punchVector, 0, transform.forward, punchVector.x);
-        }
-        if (tag == "Player2")
-        {
-            boxCast = Physics2D.BoxCastAll(new Vector2(transform.position.x - punchVectorPosition.x, transform.position.y + punchVectorPosition.y), punchVector, 0, transform.forward, punchVector.x);
-        }
-        for (int i = 0; i < boxCast.Length; i++)
-        {
+            currentState = CharState.Punch;
             if (tag == "Player1")
             {
-                if (boxCast[i].rigidbody.gameObject.tag == "Player2")
-                {
-                    GameObject.FindGameObjectWithTag("Player2").GetComponent<PlayerController>().DamagePlayer(5);
-                }
+                boxCast = Physics2D.BoxCastAll(new Vector2(transform.position.x + punchVectorPosition.x, transform.position.y + punchVectorPosition.y), punchVector, 0, transform.forward, punchVector.x);
             }
-
             if (tag == "Player2")
             {
-                if (boxCast[i].rigidbody.gameObject.tag == "Player1")
+                boxCast = Physics2D.BoxCastAll(new Vector2(transform.position.x - punchVectorPosition.x, transform.position.y + punchVectorPosition.y), punchVector, 0, transform.forward, punchVector.x);
+            }
+            for (int i = 0; i < boxCast.Length; i++)
+            {
+                if (tag == "Player1")
                 {
-                    GameObject.FindGameObjectWithTag("Player1").GetComponent<PlayerController>().DamagePlayer(5);
+                    if (boxCast[i].rigidbody.gameObject.tag == "Player2")
+                    {
+                        GameObject.FindGameObjectWithTag("Player2").GetComponent<PlayerController>().DamagePlayer(5);
+                    }
+                }
+
+                if (tag == "Player2")
+                {
+                    if (boxCast[i].rigidbody.gameObject.tag == "Player1")
+                    {
+                        GameObject.FindGameObjectWithTag("Player1").GetComponent<PlayerController>().DamagePlayer(5);
+                    }
                 }
             }
         }
-        //gameObject.transform.GetChild(0).gameObject.GetComponent<BoxCollider2D>().enabled = true;
-        yield return new WaitForSeconds(0.2f);
-        currentState = CharState.Idle;
-        punchCooldown = false;
-        //gameObject.transform.GetChild(0).gameObject.GetComponent<BoxCollider2D>().enabled = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -286,6 +128,86 @@ public class PlayerController : MonoBehaviour
         else
         {
             SoundManagerScript.PlaySound("blockHit");
+        }
+    }
+
+    public void HandleMovement()
+    {
+        if (gameObject.tag == "Player1")
+        {
+            //Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D>(), GameObject.FindGameObjectWithTag("Player2").GetComponent<BoxCollider2D>());
+
+            left = Input.GetKey(KeyCode.A);
+            right = Input.GetKey(KeyCode.D);
+
+            punch = Input.GetKeyDown(KeyCode.V);
+            block = Input.GetKey(KeyCode.B);
+
+            jumpKey = Input.GetKeyDown(KeyCode.Space);
+        }
+        if (gameObject.tag == "Player2")
+        {
+            //Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D>(), GameObject.FindGameObjectWithTag("Player1").GetComponent<BoxCollider2D>());
+
+            left = Input.GetKey(KeyCode.LeftArrow);
+            right = Input.GetKey(KeyCode.RightArrow);
+
+            punch = Input.GetKeyDown(KeyCode.Keypad0);
+            block = Input.GetKey(KeyCode.KeypadEnter);
+
+            jumpKey = Input.GetKeyDown(KeyCode.DownArrow);
+        }
+
+        //Punch+Block
+        if (punch && punchCooldown == false)
+        {
+            PlayerPunch();
+        }
+        if (block && !left && !right)
+        {
+            currentState = CharState.Block;
+        }
+
+        //Right+Left
+        if (right && !block)
+        {
+            currentState = CharState.Run;
+            playerRB.transform.position += new Vector3(1 * Time.deltaTime * moveSpeed, 0, 0);
+        }
+        if (left && !block)
+        {
+            currentState = CharState.Run;
+            playerRB.transform.position += new Vector3(-1 * Time.deltaTime * moveSpeed, 0, 0);
+        }
+
+        //Fall
+        if (playerRB.velocity.y < 0)
+        {
+            playerRB.gravityScale = fallVel;
+            isFalling = true;
+            isJumping = false;
+            currentState = CharState.Fall;
+        }
+
+        //Jump
+        if (playerRB.velocity.y >= 0)
+        {
+            playerRB.gravityScale = 1;
+            isFalling = false;
+        }
+
+        if (jumpKey && isGrounded)
+        {
+            isJumping = true;
+            currentState = CharState.Jump;
+            playerRB.AddForce(Vector2.up * jumpVel, ForceMode2D.Impulse);
+            isGrounded = false;
+        }
+
+        //Idle
+        if (!right && !left && !punch && !block && !isJumping && !isFalling)
+        {
+            currentState = CharState.Idle;
         }
     }
 
@@ -326,10 +248,11 @@ public class PlayerController : MonoBehaviour
             restartButton.SetActive(true);
             alive = false;
             currentState = CharState.Death;
+            gameManager.GetComponent<GameManagerScript>().DisablePlayerScripts();
         }
     }
 
-    public void Jump()
+    private void Jump()
     {
         if(playerRB.velocity.y < 0)
         { 
@@ -344,7 +267,6 @@ public class PlayerController : MonoBehaviour
             if (gameObject.tag == "Player1")
             {
                 jumpKey = Input.GetKeyDown(KeyCode.Space);
-                Debug.Log("Jump");
 
                 if (jumpKey)
                 {
