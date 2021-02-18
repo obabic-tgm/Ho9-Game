@@ -6,13 +6,13 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    protected enum CharState { Idle, Run, Punch, Block, Jump, Fall, Hit, Death };
+    public enum CharState { Idle, Run, Punch, Block, Jump, Fall, Hit, Death };
 
     Rigidbody2D playerRB;
     Vector3 Move;
     public int moveSpeed;
     private Animator animator;
-    private CharState currentState;
+    public CharState currentState;
     private RaycastHit2D[] boxCast;
     private CharState lastState;
 
@@ -68,9 +68,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Debug.Log(tag + ": " + currentState);
-        RestartGame();
         HandleAnims();
         HandleMovement();
+        RestartGame();
     }
     public void PlayerPunch()
     {
@@ -204,8 +204,10 @@ public class PlayerController : MonoBehaviour
             isGrounded = false;
         }
 
+        bool isPunching = currentState == CharState.Punch;
+
         //Idle
-        if (!right && !left && !punch && !block && !isJumping && !isFalling)
+        if (!right && !left && !isPunching && !block && !isJumping && !isFalling)
         {
             currentState = CharState.Idle;
         }
@@ -245,9 +247,9 @@ public class PlayerController : MonoBehaviour
     {
         if(curHealth <= 0)
         {
+            currentState = CharState.Death;
             restartButton.SetActive(true);
             alive = false;
-            currentState = CharState.Death;
             gameManager.GetComponent<GameManagerScript>().DisablePlayerScripts();
         }
     }

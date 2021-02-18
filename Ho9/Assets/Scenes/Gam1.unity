@@ -1920,12 +1920,12 @@ PrefabInstance:
     - target: {fileID: 2377318646137835337, guid: 45c2d5464c331da4ead430bfda56ad04,
         type: 3}
       propertyPath: curHealth
-      value: 1000
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2377318646137835337, guid: 45c2d5464c331da4ead430bfda56ad04,
         type: 3}
       propertyPath: maxHealth
-      value: 1000
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2377318646137835337, guid: 45c2d5464c331da4ead430bfda56ad04,
         type: 3}
