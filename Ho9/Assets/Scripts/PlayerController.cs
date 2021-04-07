@@ -1,12 +1,49 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Security;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     public enum CharState { Idle, Run, Punch, Block, Jump, Fall, Hit, Death };
+
+    //=====================================================
+    // Escaping Animator Hell
+    //=====================================================
+
+    public int groundMask;
+
+    //Animation States
+    const string PLAYER_IDLE = "Player_idle";
+    const string PLAYER_RUN = "Player_run";
+    const string PLAYER_ATTACK = "Player_attack";
+    const string PLAYER_BLOCK = "Player_block";
+    //const string PLAYER_AIR_ATTACK = "Player_air_attack";
+    const string PLAYER_JUMP = "Player_jump";
+    const string PLAYER_FALL = "Player_fall";
+    const string PLAYER_HIT = "Player_hit";
+    const string PLAYER_DEATH = "Player_death";
+
+    private string currentAnimaton;
+
+
+    [SerializeField]
+    private float attackDelay = 0.3f;
+
+    private bool isAttackPressed;
+    private bool isAttacking;
+    private bool isLeftPressed;
+    private bool isRightPressed;
+    private bool isBlockPressed;
+    private bool isJumpPressed;
+
+    private bool isTurned;
+
+    //=====================================================
+    // Escaping Animator Hell
+    //=====================================================
 
     Rigidbody2D playerRB;
     Vector3 Move;
@@ -54,6 +91,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        groundMask = LayerMask.GetMask("Ground");
         animator = GetComponent<Animator>();
         playerRB = GetComponent<Rigidbody2D>();
         lastState = currentState = (CharState)animator.GetInteger("state");
@@ -62,8 +100,9 @@ public class PlayerController : MonoBehaviour
         flipped = false;
         isFalling = false;
         alive = true;
+        isTurned = false;
     }
-
+    /*
     // Update is called once per frame
     void Update()
     {
@@ -71,7 +110,15 @@ public class PlayerController : MonoBehaviour
         HandleAnims();
         HandleMovement();
         RestartGame();
+    }*/
+
+    
+    void Update()
+    {
+        HandleInputs();
+        RestartGame();
     }
+
     public void PlayerPunch()
     {
         if (currentState != CharState.Punch)
@@ -106,14 +153,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.gameObject == ground) isGrounded = true;
-    }
-
     private void DamagePlayer(float damage)
     {
-        if (block == false)
+        if (isBlockPressed == false)
         {
             curHealth -= damage;
 
@@ -122,94 +164,12 @@ public class PlayerController : MonoBehaviour
 
             healthBarImage.fillAmount = (curHealth / 100);
             gameObject.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
-            currentState = CharState.Hit;
+            ChangeAnimationState(PLAYER_HIT);
             StartCoroutine(DamageEffect());
         }
         else
         {
             SoundManagerScript.PlaySound("blockHit");
-        }
-    }
-
-    public void HandleMovement()
-    {
-        if (gameObject.tag == "Player1")
-        {
-            //Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D>(), GameObject.FindGameObjectWithTag("Player2").GetComponent<BoxCollider2D>());
-
-            left = Input.GetKey(KeyCode.A);
-            right = Input.GetKey(KeyCode.D);
-
-            punch = Input.GetKeyDown(KeyCode.V);
-            block = Input.GetKey(KeyCode.B);
-
-            jumpKey = Input.GetKeyDown(KeyCode.Space);
-        }
-        if (gameObject.tag == "Player2")
-        {
-            //Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D>(), GameObject.FindGameObjectWithTag("Player1").GetComponent<BoxCollider2D>());
-
-            left = Input.GetKey(KeyCode.LeftArrow);
-            right = Input.GetKey(KeyCode.RightArrow);
-
-            punch = Input.GetKeyDown(KeyCode.Keypad0);
-            block = Input.GetKey(KeyCode.KeypadEnter);
-
-            jumpKey = Input.GetKeyDown(KeyCode.DownArrow);
-        }
-
-        //Punch+Block
-        if (punch && punchCooldown == false)
-        {
-            PlayerPunch();
-        }
-        if (block && !left && !right)
-        {
-            currentState = CharState.Block;
-        }
-
-        //Right+Left
-        if (right && !block)
-        {
-            currentState = CharState.Run;
-            playerRB.transform.position += new Vector3(1 * Time.deltaTime * moveSpeed, 0, 0);
-        }
-        if (left && !block)
-        {
-            currentState = CharState.Run;
-            playerRB.transform.position += new Vector3(-1 * Time.deltaTime * moveSpeed, 0, 0);
-        }
-
-        //Fall
-        if (playerRB.velocity.y < 0)
-        {
-            playerRB.gravityScale = fallVel;
-            isFalling = true;
-            isJumping = false;
-            currentState = CharState.Fall;
-        }
-
-        //Jump
-        if (playerRB.velocity.y >= 0)
-        {
-            playerRB.gravityScale = 1;
-            isFalling = false;
-        }
-
-        if (jumpKey && isGrounded)
-        {
-            isJumping = true;
-            currentState = CharState.Jump;
-            playerRB.AddForce(Vector2.up * jumpVel, ForceMode2D.Impulse);
-            isGrounded = false;
-        }
-
-        bool isPunching = currentState == CharState.Punch;
-
-        //Idle
-        if (!right && !left && !isPunching && !block && !isJumping && !isFalling)
-        {
-            currentState = CharState.Idle;
         }
     }
 
@@ -245,47 +205,217 @@ public class PlayerController : MonoBehaviour
 
     private void RestartGame()
     {
-        if(curHealth <= 0)
+        if (curHealth <= 0)
         {
-            currentState = CharState.Death;
+            ChangeAnimationState(PLAYER_DEATH);
             restartButton.SetActive(true);
             alive = false;
             gameManager.GetComponent<GameManagerScript>().DisablePlayerScripts();
         }
     }
 
-    private void Jump()
+    void ChangeAnimationState(string newAnimation)
     {
-        if(playerRB.velocity.y < 0)
-        { 
-            playerRB.gravityScale = fallVel;
-        } else
+        if (currentAnimaton == newAnimation) return;
+
+        animator.Play(newAnimation);
+        currentAnimaton = newAnimation;
+    }
+
+    void FixedUpdate()
+    {
+        //Debug.Log(LayerMask.NameToLayer("Ground"));
+        //check if player is on the ground
+        Debug.DrawRay(transform.position, Vector2.down * 3.1f, Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 3.1f, groundMask);
+        if (hit.collider != null)
         {
-            playerRB.gravityScale = 1;
+            isGrounded = true;
         }
+        else
+        {
+            isGrounded = false;
+        }
+
+        //------------------------------------------
+
+        //Check update movement based on input
+
+        //=====================================================
+        // MEINS
+        //=====================================================
+
+
 
         if (isGrounded)
         {
-            if (gameObject.tag == "Player1")
+            isFalling = false;
+            if (!isAttacking)
             {
-                jumpKey = Input.GetKeyDown(KeyCode.Space);
-
-                if (jumpKey)
+                if(isLeftPressed)
                 {
-                    isGrounded = false;
-                    playerRB.AddForce(Vector2.up * jumpVel, ForceMode2D.Impulse);
+                    ChangeAnimationState(PLAYER_RUN);
+                    playerRB.transform.position += new Vector3(-1 * Time.deltaTime * moveSpeed, 0, 0);
+                    if (gameObject.tag == "Player1" && !isTurned)
+                    {
+                        isTurned = true;
+                        Vector3 newScale = transform.localScale;
+                        newScale.x *= -1;
+                        transform.localScale = newScale;
+                        punchVectorPosition.x = -punchVectorPosition.x;
+                    }
+                    if (gameObject.tag == "Player2" && isTurned)
+                    {
+                        isTurned = false;
+                        Vector3 newScale = transform.localScale;
+                        newScale.x *= -1;
+                        transform.localScale = newScale;
+                        punchVectorPosition.x = -punchVectorPosition.x;
+                    }
+                }
+                if (isRightPressed)
+                {
+                    ChangeAnimationState(PLAYER_RUN);
+                    playerRB.transform.position += new Vector3(1 * Time.deltaTime * moveSpeed, 0, 0);
+                    if (gameObject.tag == "Player1" && isTurned)
+                    {
+                        isTurned = false;
+                        Vector3 newScale = transform.localScale;
+                        newScale.x *= -1;
+                        transform.localScale = newScale;
+                        punchVectorPosition.x = -punchVectorPosition.x;
+                    }
+                    if (gameObject.tag == "Player2" && !isTurned)
+                    {
+                        isTurned = true;
+                        Vector3 newScale = transform.localScale;
+                        newScale.x *= -1;
+                        transform.localScale = newScale;
+                        punchVectorPosition.x = -punchVectorPosition.x;
+                    }
                 }
             }
-            if (gameObject.tag == "Player2")
+            if (isAttackPressed)
             {
-                jumpKey = Input.GetKeyDown(KeyCode.DownArrow);
-
-                if (jumpKey)
+                isAttackPressed = false;
+                if (!isAttacking)
                 {
-                    isGrounded = false;
-                    playerRB.AddForce(Vector2.up * jumpVel, ForceMode2D.Impulse);
+                    isAttacking = true;
+                    ChangeAnimationState(PLAYER_ATTACK);
+                    PlayerPunch();
                 }
+                attackDelay = animator.GetCurrentAnimatorStateInfo(0).length;
+                Invoke("AttackComplete", attackDelay);
             }
+
+            if (isBlockPressed)
+            {
+                ChangeAnimationState(PLAYER_BLOCK);
+            }
+
+                // Jump Pressed
+            if (isJumpPressed)
+            {
+                if(playerRB.velocity.y >= 0){
+                    playerRB.gravityScale = 1;
+                }
+                isJumping = true;
+                playerRB.AddForce(Vector2.up * jumpVel, ForceMode2D.Impulse);
+                isJumpPressed = false;
+                ChangeAnimationState(PLAYER_JUMP);
+            }
+            if(!isJumpPressed && !isLeftPressed && !isRightPressed && !isBlockPressed && !isFalling && !isAttacking)
+            {
+                ChangeAnimationState(PLAYER_IDLE);
+            }
+        }
+        else
+        {
+            if (playerRB.velocity.y < 0)
+            {
+                playerRB.gravityScale = fallVel;
+                isFalling = true;
+                isJumping = false;
+                ChangeAnimationState(PLAYER_FALL);
+            }
+        }
+
+        //=====================================================
+        // MEINS
+        //=====================================================
+    }
+    void AttackComplete()
+    {
+        isAttacking = false;
+    }
+
+    public void HandleInputs()
+    {
+        if (gameObject.tag == "Player1")
+        {
+            //space Atatck key pressed?
+            if (Input.GetKey(KeyCode.A))
+            {
+                isLeftPressed = true;
+            }
+            else isLeftPressed = false;
+
+            if (Input.GetKey(KeyCode.D))
+            {
+                isRightPressed = true;
+            }
+            else isRightPressed = false;
+
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                isAttackPressed = true;
+            }
+            else isAttackPressed = false;
+
+            if (Input.GetKey(KeyCode.B))
+            {
+                isBlockPressed = true;
+            }
+            else isBlockPressed = false;
+
+            if (Input.GetKey(KeyCode.Space))
+            {
+                isJumpPressed = true;
+            }
+            else isJumpPressed = false;
+        }
+        if (gameObject.tag == "Player2")
+        {
+            //space Atatck key pressed?
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                isLeftPressed = true;
+            }
+            else isLeftPressed = false;
+
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                isRightPressed = true;
+            }
+            else isRightPressed = false;
+
+            if (Input.GetKeyDown(KeyCode.Keypad0))
+            {
+                isAttackPressed = true;
+            }
+            else isAttackPressed = false;
+
+            if (Input.GetKey(KeyCode.KeypadEnter))
+            {
+                isBlockPressed = true;
+            }
+            else isBlockPressed = false;
+
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
+                isJumpPressed = true;
+            }
+            else isJumpPressed = false;
         }
     }
 }
