@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 2377318646137835340}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6.99, y: 0.62, z: 0}
-  m_LocalScale: {x: 5.422862, y: 5.422862, z: 5.422862}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 2377318646666800518}
   - {fileID: 2377318647662259668}
@@ -103,10 +103,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd5c5a31342d814f88756f86d896e7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundMask: 0
+  attackDelay: 0.3
   moveSpeed: 8
+  currentState: 0
   curHealth: 10
   maxHealth: 10
   healthBarImage: {fileID: 0}
+  gameManager: {fileID: 0}
   restartButton: {fileID: 0}
   ground: {fileID: 0}
   bonusGravity: 0

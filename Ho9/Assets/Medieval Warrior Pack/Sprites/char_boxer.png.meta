@@ -1,0 +1,824 @@
+fileFormatVersion: 2
+guid: a83d9add3842f0b47a956e3df5e19dce
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3283287642723581161
+    second: char_boxer_0
+  - first:
+      213: -5956174765987327434
+    second: char_boxer_1
+  - first:
+      213: -756389273342720412
+    second: char_boxer_2
+  - first:
+      213: -4437276453973262798
+    second: char_boxer_3
+  - first:
+      213: 5410684887723707248
+    second: char_boxer_4
+  - first:
+      213: -3150450401481358652
+    second: char_boxer_5
+  - first:
+      213: 8795999299019315830
+    second: char_boxer_6
+  - first:
+      213: 4565770394805993601
+    second: char_boxer_7
+  - first:
+      213: 1014477209765092104
+    second: char_boxer_8
+  - first:
+      213: 47133204537156354
+    second: char_boxer_9
+  - first:
+      213: -5087694386382719575
+    second: char_boxer_10
+  - first:
+      213: 4453233372951549689
+    second: char_boxer_11
+  - first:
+      213: 2799994145544865202
+    second: char_boxer_12
+  - first:
+      213: 6213908743861398501
+    second: char_boxer_13
+  - first:
+      213: 5699398456025878029
+    second: char_boxer_14
+  - first:
+      213: -8310316623612596443
+    second: char_boxer_15
+  - first:
+      213: -2640146215447421228
+    second: char_boxer_16
+  - first:
+      213: 686801745129741715
+    second: char_boxer_17
+  - first:
+      213: -1922772085518907003
+    second: char_boxer_18
+  - first:
+      213: -4089992396797130515
+    second: char_boxer_19
+  - first:
+      213: 5230360711398606301
+    second: char_boxer_20
+  - first:
+      213: 1792085008750298755
+    second: char_boxer_21
+  - first:
+      213: 7697934003303820694
+    second: char_boxer_22
+  - first:
+      213: -4100694825638936504
+    second: char_boxer_23
+  - first:
+      213: 3982920169131924757
+    second: char_boxer_24
+  - first:
+      213: -8132726204593719322
+    second: char_boxer_25
+  - first:
+      213: -3827004185416364465
+    second: char_boxer_26
+  - first:
+      213: -4467381551015534419
+    second: char_boxer_27
+  - first:
+      213: 7280904041534885119
+    second: char_boxer_28
+  - first:
+      213: 6221714040122215013
+    second: char_boxer_29
+  - first:
+      213: 9189797852039066097
+    second: char_boxer_30
+  - first:
+      213: 6875641623635062299
+    second: char_boxer_31
+  - first:
+      213: -3799930093385073919
+    second: char_boxer_32
+  - first:
+      213: 1259149844464373909
+    second: char_boxer_33
+  - first:
+      213: -8451011908477413182
+    second: char_boxer_34
+  - first:
+      213: 5582902312976625564
+    second: char_boxer_35
+  - first:
+      213: 2803528217141979830
+    second: char_boxer_36
+  - first:
+      213: 766488336509120757
+    second: char_boxer_37
+  - first:
+      213: 8740512759878985265
+    second: char_boxer_38
+  - first:
+      213: 4426096652564124370
+    second: char_boxer_39
+  - first:
+      213: 6103651992827381756
+    second: char_boxer_40
+  - first:
+      213: 1489532651640376414
+    second: char_boxer_41
+  - first:
+      213: -8473779153433695024
+    second: char_boxer_42
+  - first:
+      213: 4393426513214379203
+    second: char_boxer_43
+  - first:
+      213: 817862494343239117
+    second: char_boxer_44
+  - first:
+      213: 5252868400002243005
+    second: char_boxer_45
+  - first:
+      213: -1977417983630109100
+    second: char_boxer_46
+  - first:
+      213: -1068904408924687635
+    second: char_boxer_47
+  - first:
+      213: 3952209433431832965
+    second: char_boxer_48
+  - first:
+      213: 240335685726901664
+    second: char_boxer_49
+  - first:
+      213: -2911864716652067927
+    second: char_boxer_50
+  - first:
+      213: 7725646377842048012
+    second: char_boxer_51
+  - first:
+      213: -1295375439207316936
+    second: char_boxer_52
+  - first:
+      213: 5708944472609460336
+    second: char_boxer_53
+  - first:
+      213: -1926220426559485016
+    second: char_boxer_54
+  - first:
+      213: 4760232686332598675
+    second: char_boxer_55
+  - first:
+      213: 4663171674268878544
+    second: char_boxer_56
+  - first:
+      213: 7108745756350027371
+    second: char_boxer_57
+  - first:
+      213: -3277202087918074745
+    second: char_boxer_58
+  - first:
+      213: -8978776688722067742
+    second: char_boxer_59
+  - first:
+      213: -668252499368962246
+    second: char_boxer_60
+  - first:
+      213: -957988048255945181
+    second: char_boxer_61
+  - first:
+      213: 9200249251997648923
+    second: char_boxer_62
+  - first:
+      213: -2096945420330017457
+    second: char_boxer_63
+  - first:
+      213: 4588483696582696325
+    second: char_boxer_64
+  - first:
+      213: 1056738285472693213
+    second: char_boxer_65
+  - first:
+      213: 5831739976730853031
+    second: char_boxer_66
+  - first:
+      213: -5465401332595162180
+    second: char_boxer_67
+  - first:
+      213: 990039031186983544
+    second: char_boxer_68
+  - first:
+      213: 2063703894726529955
+    second: char_boxer_69
+  - first:
+      213: -2357403148381643647
+    second: char_boxer_70
+  - first:
+      213: 1565709170423511627
+    second: char_boxer_71
+  - first:
+      213: 4585786290993846159
+    second: char_boxer_72
+  - first:
+      213: -1224715682551743710
+    second: char_boxer_73
+  - first:
+      213: 5736173321573959703
+    second: char_boxer_74
+  - first:
+      213: -1217342493412291686
+    second: char_boxer_75
+  - first:
+      213: -8222700504065533555
+    second: char_boxer_76
+  - first:
+      213: 3259000445134852938
+    second: char_boxer_77
+  - first:
+      213: 3278447181717221340
+    second: char_boxer_78
+  - first:
+      213: -8244762182712558360
+    second: char_boxer_0
+  - first:
+      213: -2932789846127051192
+    second: char_boxer_1
+  - first:
+      213: 558560864026364299
+    second: char_boxer_2
+  - first:
+      213: -6652964156417333069
+    second: char_boxer_3
+  - first:
+      213: 298448368198000486
+    second: char_boxer_4
+  - first:
+      213: 3887294890074999349
+    second: char_boxer_5
+  - first:
+      213: -9019101009804940943
+    second: char_boxer_6
+  - first:
+      213: 5281999264396298623
+    second: char_boxer_7
+  - first:
+      213: 1543480822121888853
+    second: char_boxer_8
+  - first:
+      213: -7675258619835966304
+    second: char_boxer_9
+  - first:
+      213: 3670906776555801767
+    second: char_boxer_10
+  - first:
+      213: 1236101487533156507
+    second: char_boxer_11
+  - first:
+      213: 900446505048583622
+    second: char_boxer_12
+  - first:
+      213: -8082063326022597637
+    second: char_boxer_13
+  - first:
+      213: -8741915087968573092
+    second: char_boxer_14
+  - first:
+      213: -920480691002321857
+    second: char_boxer_15
+  - first:
+      213: 4615772329381298007
+    second: char_boxer_16
+  - first:
+      213: -6821531300893018433
+    second: char_boxer_17
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 150
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    resizeAlgorithm: 1
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 8192
+    resizeAlgorithm: 1
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 8192
+    resizeAlgorithm: 1
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: tvOS
+    maxTextureSize: 8192
+    resizeAlgorithm: 1
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 8192
+    resizeAlgorithm: 1
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Lumin
+    maxTextureSize: 8192
+    resizeAlgorithm: 1
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 8192
+    resizeAlgorithm: 1
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 8192
+    resizeAlgorithm: 1
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: char_boxer_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 200
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8ecf7d93a78b49d80800000000000000
+      internalID: -8244762182712558360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: char_boxer_1
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 0
+        width: 200
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84e79bc6c23ac47d0800000000000000
+      internalID: -2932789846127051192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: char_boxer_2
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 0
+        width: 200
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b890abd752860c700800000000000000
+      internalID: 558560864026364299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: char_boxer_3
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 0
+        width: 200
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b8a651495ceba3a0800000000000000
+      internalID: -6652964156417333069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: char_boxer_4
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 0
+        width: 200
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 66f9c3aa53d442400800000000000000
+      internalID: 298448368198000486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: char_boxer_5
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 0
+        width: 200
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53a8c145b1272f530800000000000000
+      internalID: 3887294890074999349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: char_boxer_6
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 0
+        width: 200
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 179a535ba67b5d280800000000000000
+      internalID: -9019101009804940943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: char_boxer_7
+      rect:
+        serializedVersion: 2
+        x: 1400
+        y: 0
+        width: 200
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f794732885e6d4940800000000000000
+      internalID: 5281999264396298623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: char_boxer_8
+      rect:
+        serializedVersion: 2
+        x: 1600
+        y: 0
+        width: 200
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55cf33841ab8b6510800000000000000
+      internalID: 1543480822121888853
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: char_boxer_9
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 0
+        width: 200
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ac1c6553f00c7590800000000000000
+      internalID: -7675258619835966304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: char_boxer_10
+      rect:
+        serializedVersion: 2
+        x: 2000
+        y: 0
+        width: 200
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7acce24934ea1f230800000000000000
+      internalID: 3670906776555801767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: char_boxer_11
+      rect:
+        serializedVersion: 2
+        x: 2200
+        y: 0
+        width: 200
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b98eeb6f0c3872110800000000000000
+      internalID: 1236101487533156507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: char_boxer_12
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 0
+        width: 200
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6cda9a853570f7c00800000000000000
+      internalID: 900446505048583622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: char_boxer_13
+      rect:
+        serializedVersion: 2
+        x: 2600
+        y: 0
+        width: 200
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf30630c93eb6df80800000000000000
+      internalID: -8082063326022597637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: char_boxer_14
+      rect:
+        serializedVersion: 2
+        x: 2800
+        y: 0
+        width: 200
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c59610d4b8a7ea680800000000000000
+      internalID: -8741915087968573092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: char_boxer_15
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 0
+        width: 200
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f34533e30bbc933f0800000000000000
+      internalID: -920480691002321857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: char_boxer_16
+      rect:
+        serializedVersion: 2
+        x: 3200
+        y: 0
+        width: 200
+        height: 180
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75f79d86a748e0040800000000000000
+      internalID: 4615772329381298007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

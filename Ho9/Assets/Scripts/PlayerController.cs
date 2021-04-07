@@ -20,24 +20,41 @@ public class PlayerController : MonoBehaviour
     const string PLAYER_RUN = "Player_run";
     const string PLAYER_ATTACK = "Player_attack";
     const string PLAYER_BLOCK = "Player_block";
-    //const string PLAYER_AIR_ATTACK = "Player_air_attack";
     const string PLAYER_JUMP = "Player_jump";
     const string PLAYER_FALL = "Player_fall";
     const string PLAYER_HIT = "Player_hit";
     const string PLAYER_DEATH = "Player_death";
 
+    //Animation States Boxer
+    const string BOXER_IDLE = "boxer_idle";
+    const string BOXER_RUN = "boxer_run";
+    const string BOXER_ATTACK_QP = "boxer_attack_quick_punch";
+    const string BOXER_BLOCK = "boxer_block";
+    const string BOXER_JUMP = "boxer_jump";
+    const string BOXER_FALL = "boxer_fall";
+    const string BOXER_ATTACK_HP = "boxer_attack_heavy_punch";
+
+    //OFFEN
+    const string BOXER_HIT = "boxer_hit";
+    const string BOXER_DEATH = "Player_death";
+
     private string currentAnimaton;
 
 
     [SerializeField]
-    private float attackDelay = 0.3f;
+    private float attackDelay = 0.6666667f;
 
     private bool isAttackPressed;
     private bool isAttacking;
+    private bool isHeavyAttackPressed;
+    private bool isHeavyAttacking;
+
     private bool isLeftPressed;
     private bool isRightPressed;
     private bool isBlockPressed;
     private bool isJumpPressed;
+
+    private bool isDamaged;
 
     private bool isTurned;
 
@@ -79,6 +96,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     public Vector2 punchVector;
     public Vector2 punchVectorPosition;
+    public float GroundedRay;
     public float jumpVel;
     public float fallVel;
 
@@ -101,6 +119,7 @@ public class PlayerController : MonoBehaviour
         isFalling = false;
         alive = true;
         isTurned = false;
+        isDamaged = false;
     }
     /*
     // Update is called once per frame
@@ -112,7 +131,7 @@ public class PlayerController : MonoBehaviour
         RestartGame();
     }*/
 
-    
+
     void Update()
     {
         HandleInputs();
@@ -121,33 +140,35 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerPunch()
     {
-        if (currentState != CharState.Punch)
+        if (tag == "Player1")
         {
-            currentState = CharState.Punch;
+            boxCast = Physics2D.BoxCastAll(new Vector2(transform.position.x + punchVectorPosition.x, transform.position.y + punchVectorPosition.y), punchVector, 0, transform.forward, punchVector.x);
+        }
+        if (tag == "Player2")
+        {
+            boxCast = Physics2D.BoxCastAll(new Vector2(transform.position.x - punchVectorPosition.x, transform.position.y + punchVectorPosition.y), punchVector, 0, transform.forward, punchVector.x);
+        }
+        for (int i = 0; i < boxCast.Length; i++)
+        {
             if (tag == "Player1")
             {
-                boxCast = Physics2D.BoxCastAll(new Vector2(transform.position.x + punchVectorPosition.x, transform.position.y + punchVectorPosition.y), punchVector, 0, transform.forward, punchVector.x);
+                if (boxCast[i].rigidbody.gameObject.tag == "Player2")
+                {
+                    if (isAttacking)
+                        GameObject.FindGameObjectWithTag("Player2").GetComponent<PlayerController>().DamagePlayer(5);
+                    if (isHeavyAttacking)
+                        GameObject.FindGameObjectWithTag("Player2").GetComponent<PlayerController>().DamagePlayer(15);
+                }
             }
+
             if (tag == "Player2")
             {
-                boxCast = Physics2D.BoxCastAll(new Vector2(transform.position.x - punchVectorPosition.x, transform.position.y + punchVectorPosition.y), punchVector, 0, transform.forward, punchVector.x);
-            }
-            for (int i = 0; i < boxCast.Length; i++)
-            {
-                if (tag == "Player1")
+                if (boxCast[i].rigidbody.gameObject.tag == "Player1")
                 {
-                    if (boxCast[i].rigidbody.gameObject.tag == "Player2")
-                    {
+                    if (isAttacking)
                         GameObject.FindGameObjectWithTag("Player2").GetComponent<PlayerController>().DamagePlayer(5);
-                    }
-                }
-
-                if (tag == "Player2")
-                {
-                    if (boxCast[i].rigidbody.gameObject.tag == "Player1")
-                    {
-                        GameObject.FindGameObjectWithTag("Player1").GetComponent<PlayerController>().DamagePlayer(5);
-                    }
+                    if (isHeavyAttacking)
+                        GameObject.FindGameObjectWithTag("Player2").GetComponent<PlayerController>().DamagePlayer(15);
                 }
             }
         }
@@ -157,6 +178,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isBlockPressed == false)
         {
+            isDamaged = true;
             curHealth -= damage;
 
             //Plays hitSound!
@@ -164,7 +186,7 @@ public class PlayerController : MonoBehaviour
 
             healthBarImage.fillAmount = (curHealth / 100);
             gameObject.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
-            ChangeAnimationState(PLAYER_HIT);
+            ChangeAnimationState(BOXER_HIT);
             StartCoroutine(DamageEffect());
         }
         else
@@ -175,25 +197,16 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator DamageEffect()
     {
-        for(int i = 0; i < 10; i++)
+        for (int i = 0; i < 10; i++)
         {
             GetComponent<ColorChange>().materialChange(1);
             yield return new WaitForSeconds(0.05f);
             GetComponent<ColorChange>().materialChange(0);
             yield return new WaitForSeconds(0.05f);
         }
+        isDamaged = false;
     }
 
-    private void HandleAnims()
-    {
-        if (lastState != currentState)
-        {
-            // set the animation state shere
-            animator.SetInteger("state", (int)currentState);
-            lastState = currentState;
-        }
-
-    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
@@ -226,8 +239,8 @@ public class PlayerController : MonoBehaviour
     {
         //Debug.Log(LayerMask.NameToLayer("Ground"));
         //check if player is on the ground
-        Debug.DrawRay(transform.position, Vector2.down * 3.1f, Color.red);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 3.1f, groundMask);
+        Debug.DrawRay(transform.position, Vector2.down * GroundedRay, Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, GroundedRay, groundMask);
         if (hit.collider != null)
         {
             isGrounded = true;
@@ -250,11 +263,11 @@ public class PlayerController : MonoBehaviour
         if (isGrounded)
         {
             isFalling = false;
-            if (!isAttacking)
+            if (!isAttacking && !isHeavyAttacking)
             {
-                if(isLeftPressed)
+                if (isLeftPressed)
                 {
-                    ChangeAnimationState(PLAYER_RUN);
+                    ChangeAnimationState(BOXER_RUN);
                     playerRB.transform.position += new Vector3(-1 * Time.deltaTime * moveSpeed, 0, 0);
                     if (gameObject.tag == "Player1" && !isTurned)
                     {
@@ -275,7 +288,7 @@ public class PlayerController : MonoBehaviour
                 }
                 if (isRightPressed)
                 {
-                    ChangeAnimationState(PLAYER_RUN);
+                    ChangeAnimationState(BOXER_RUN);
                     playerRB.transform.position += new Vector3(1 * Time.deltaTime * moveSpeed, 0, 0);
                     if (gameObject.tag == "Player1" && isTurned)
                     {
@@ -301,32 +314,44 @@ public class PlayerController : MonoBehaviour
                 if (!isAttacking)
                 {
                     isAttacking = true;
-                    ChangeAnimationState(PLAYER_ATTACK);
+                    ChangeAnimationState(BOXER_ATTACK_QP);
                     PlayerPunch();
                 }
-                attackDelay = animator.GetCurrentAnimatorStateInfo(0).length;
                 Invoke("AttackComplete", attackDelay);
+            }
+
+            if (isHeavyAttackPressed)
+            {
+                isHeavyAttackPressed = false;
+                if (!isHeavyAttacking)
+                {
+                    isHeavyAttacking = true;
+                    ChangeAnimationState(BOXER_ATTACK_HP);
+                    PlayerPunch();
+                }
+                Invoke("HeavyAttackComplete", attackDelay*2-0.4f);
             }
 
             if (isBlockPressed)
             {
-                ChangeAnimationState(PLAYER_BLOCK);
+                ChangeAnimationState(BOXER_BLOCK);
             }
 
-                // Jump Pressed
+            // Jump Pressed
             if (isJumpPressed)
             {
-                if(playerRB.velocity.y >= 0){
+                if (playerRB.velocity.y >= 0)
+                {
                     playerRB.gravityScale = 1;
                 }
                 isJumping = true;
                 playerRB.AddForce(Vector2.up * jumpVel, ForceMode2D.Impulse);
                 isJumpPressed = false;
-                ChangeAnimationState(PLAYER_JUMP);
+                ChangeAnimationState(BOXER_JUMP);
             }
-            if(!isJumpPressed && !isLeftPressed && !isRightPressed && !isBlockPressed && !isFalling && !isAttacking)
+            if (!isJumpPressed && !isLeftPressed && !isRightPressed && !isBlockPressed && !isFalling && !isAttacking && !isHeavyAttacking && !isDamaged)
             {
-                ChangeAnimationState(PLAYER_IDLE);
+                ChangeAnimationState(BOXER_IDLE);
             }
         }
         else
@@ -336,7 +361,7 @@ public class PlayerController : MonoBehaviour
                 playerRB.gravityScale = fallVel;
                 isFalling = true;
                 isJumping = false;
-                ChangeAnimationState(PLAYER_FALL);
+                ChangeAnimationState(BOXER_FALL);
             }
         }
 
@@ -347,6 +372,11 @@ public class PlayerController : MonoBehaviour
     void AttackComplete()
     {
         isAttacking = false;
+    }
+
+    void HeavyAttackComplete()
+    {
+        isHeavyAttacking = false;
     }
 
     public void HandleInputs()
@@ -371,6 +401,12 @@ public class PlayerController : MonoBehaviour
                 isAttackPressed = true;
             }
             else isAttackPressed = false;
+
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                isHeavyAttackPressed = true;
+            }
+            else isHeavyAttackPressed = false;
 
             if (Input.GetKey(KeyCode.B))
             {
