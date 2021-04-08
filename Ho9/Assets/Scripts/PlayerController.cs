@@ -378,10 +378,6 @@ public class PlayerController : MonoBehaviour
             if (isJumpAttackPressed && isJumping && tag == "Player2")
             {
                 isJumpAttackPressed = false;
-                isJumpAttacking = true;
-                ChangeAnimationState(ALI_ATTACK_JUMP);
-                PlayerPunch();
-
                 isHeavyAttackPressed = false;
                 if (!isJumpAttacking)
                 {
