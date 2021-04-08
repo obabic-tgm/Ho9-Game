@@ -1940,7 +1940,22 @@ PrefabInstance:
     - target: {fileID: 2377318646137835337, guid: 45c2d5464c331da4ead430bfda56ad04,
         type: 3}
       propertyPath: GroundedRay
-      value: 3.1
+      value: 2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2377318646137835337, guid: 45c2d5464c331da4ead430bfda56ad04,
+        type: 3}
+      propertyPath: punchVector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2377318646137835337, guid: 45c2d5464c331da4ead430bfda56ad04,
+        type: 3}
+      propertyPath: punchVectorPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2377318646137835337, guid: 45c2d5464c331da4ead430bfda56ad04,
+        type: 3}
+      propertyPath: punchVectorPosition.x
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2377318646137835339, guid: 45c2d5464c331da4ead430bfda56ad04,
         type: 3}
@@ -1951,6 +1966,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2377318646137835339, guid: 45c2d5464c331da4ead430bfda56ad04,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: -0.043966144
+      objectReference: {fileID: 0}
+    - target: {fileID: 2377318646137835339, guid: 45c2d5464c331da4ead430bfda56ad04,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.76761454
+      objectReference: {fileID: 0}
+    - target: {fileID: 2377318646137835339, guid: 45c2d5464c331da4ead430bfda56ad04,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: 0.0048130304
+      objectReference: {fileID: 0}
+    - target: {fileID: 2377318646137835339, guid: 45c2d5464c331da4ead430bfda56ad04,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.31037393
       objectReference: {fileID: 0}
     - target: {fileID: 2377318646137835340, guid: 45c2d5464c331da4ead430bfda56ad04,
         type: 3}
@@ -1965,7 +2000,7 @@ PrefabInstance:
     - target: {fileID: 2377318646137835342, guid: 45c2d5464c331da4ead430bfda56ad04,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.62
+      value: -0.25
       objectReference: {fileID: 0}
     - target: {fileID: 2377318646137835342, guid: 45c2d5464c331da4ead430bfda56ad04,
         type: 3}
@@ -2036,7 +2071,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -3283287642723581161, guid: a83d9add3842f0b47a956e3df5e19dce,
+      objectReference: {fileID: -1382848694856134314, guid: 1c42c80e65f7bd2498edc566511c321b,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45c2d5464c331da4ead430bfda56ad04, type: 3}
@@ -2118,7 +2153,7 @@ PrefabInstance:
     - target: {fileID: 4637212740603741131, guid: 2f876e4b604048445bd592d8ad8b559b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.15
+      value: -0.38
       objectReference: {fileID: 0}
     - target: {fileID: 4637212740603741131, guid: 2f876e4b604048445bd592d8ad8b559b,
         type: 3}
@@ -2229,6 +2264,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_PressDelay
       value: 0.6666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 4637212740603741132, guid: 2f876e4b604048445bd592d8ad8b559b,
+        type: 3}
+      propertyPath: punchVector.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4637212740603741132, guid: 2f876e4b604048445bd592d8ad8b559b,
+        type: 3}
+      propertyPath: punchVector.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4637212740603741132, guid: 2f876e4b604048445bd592d8ad8b559b,
+        type: 3}
+      propertyPath: punchVectorPosition.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4637212740603741132, guid: 2f876e4b604048445bd592d8ad8b559b,
+        type: 3}
+      propertyPath: punchVectorPosition.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4637212740603741134, guid: 2f876e4b604048445bd592d8ad8b559b,
         type: 3}

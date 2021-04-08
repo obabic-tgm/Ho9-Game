@@ -15,14 +15,6 @@ public class PlayerController : MonoBehaviour
 
     public int groundMask;
 
-    //Animation States
-    const string PLAYER_IDLE = "Player_idle";
-    const string PLAYER_RUN = "Player_run";
-    const string PLAYER_ATTACK = "Player_attack";
-    const string PLAYER_BLOCK = "Player_block";
-    const string PLAYER_JUMP = "Player_jump";
-    const string PLAYER_FALL = "Player_fall";
-    const string PLAYER_HIT = "Player_hit";
     const string PLAYER_DEATH = "Player_death";
 
     //Animation States Boxer
@@ -33,9 +25,19 @@ public class PlayerController : MonoBehaviour
     const string BOXER_JUMP = "boxer_jump";
     const string BOXER_FALL = "boxer_fall";
     const string BOXER_ATTACK_HP = "boxer_attack_heavy_punch";
+    const string BOXER_HIT = "boxer_hit";
+
+    //Animation States Boxer2
+    const string ALI_IDLE = "ali_idle";
+    const string ALI_RUN = "ali_run";
+    const string ALI_ATTACK_QP = "ali_attack_quick_punch";
+    const string ALI_BLOCK = "ali_block";
+    const string ALI_JUMP = "ali_jump";
+    const string ALI_FALL = "ali_fall";
+    const string ALI_ATTACK_JUMP = "ali_attack_jump";
+    const string ALI_HIT = "ali_hit";
 
     //OFFEN
-    const string BOXER_HIT = "boxer_hit";
     const string BOXER_DEATH = "Player_death";
 
     private string currentAnimaton;
@@ -105,6 +107,8 @@ public class PlayerController : MonoBehaviour
     public bool jumpKey;
     public bool isJumping;
     public bool isGrounded;
+    public bool isJumpAttackPressed;
+    public bool isJumpAttacking;
 
     // Start is called before the first frame update
     void Start()
@@ -120,6 +124,7 @@ public class PlayerController : MonoBehaviour
         alive = true;
         isTurned = false;
         isDamaged = false;
+        isJumpAttacking = false;
     }
     /*
     // Update is called once per frame
@@ -166,9 +171,9 @@ public class PlayerController : MonoBehaviour
                 if (boxCast[i].rigidbody.gameObject.tag == "Player1")
                 {
                     if (isAttacking)
-                        GameObject.FindGameObjectWithTag("Player2").GetComponent<PlayerController>().DamagePlayer(5);
-                    if (isHeavyAttacking)
-                        GameObject.FindGameObjectWithTag("Player2").GetComponent<PlayerController>().DamagePlayer(15);
+                        GameObject.FindGameObjectWithTag("Player1").GetComponent<PlayerController>().DamagePlayer(7);
+                    if (isJumpAttacking)
+                        GameObject.FindGameObjectWithTag("Player1").GetComponent<PlayerController>().DamagePlayer(12);
                 }
             }
         }
@@ -186,7 +191,10 @@ public class PlayerController : MonoBehaviour
 
             healthBarImage.fillAmount = (curHealth / 100);
             gameObject.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
-            ChangeAnimationState(BOXER_HIT);
+            if(tag == "Player1")
+                ChangeAnimationState(BOXER_HIT);
+            if (tag == "Player2")
+                ChangeAnimationState(ALI_HIT);
             StartCoroutine(DamageEffect());
         }
         else
@@ -220,7 +228,8 @@ public class PlayerController : MonoBehaviour
     {
         if (curHealth <= 0)
         {
-            ChangeAnimationState(PLAYER_DEATH);
+            //ChangeAnimationState(PLAYER_DEATH);
+            Destroy(gameObject);
             restartButton.SetActive(true);
             alive = false;
             gameManager.GetComponent<GameManagerScript>().DisablePlayerScripts();
@@ -259,7 +268,7 @@ public class PlayerController : MonoBehaviour
         //=====================================================
 
 
-
+        
         if (isGrounded)
         {
             isFalling = false;
@@ -267,7 +276,10 @@ public class PlayerController : MonoBehaviour
             {
                 if (isLeftPressed)
                 {
-                    ChangeAnimationState(BOXER_RUN);
+                    if (tag == "Player1")
+                        ChangeAnimationState(BOXER_RUN);
+                    if (tag == "Player2")
+                        ChangeAnimationState(ALI_RUN);
                     playerRB.transform.position += new Vector3(-1 * Time.deltaTime * moveSpeed, 0, 0);
                     if (gameObject.tag == "Player1" && !isTurned)
                     {
@@ -288,7 +300,10 @@ public class PlayerController : MonoBehaviour
                 }
                 if (isRightPressed)
                 {
-                    ChangeAnimationState(BOXER_RUN);
+                    if (tag == "Player1")
+                        ChangeAnimationState(BOXER_RUN);
+                    if (tag == "Player2")
+                        ChangeAnimationState(ALI_RUN);
                     playerRB.transform.position += new Vector3(1 * Time.deltaTime * moveSpeed, 0, 0);
                     if (gameObject.tag == "Player1" && isTurned)
                     {
@@ -314,7 +329,10 @@ public class PlayerController : MonoBehaviour
                 if (!isAttacking)
                 {
                     isAttacking = true;
-                    ChangeAnimationState(BOXER_ATTACK_QP);
+                    if (tag == "Player1")
+                        ChangeAnimationState(BOXER_ATTACK_QP);
+                    if (tag == "Player2")
+                        ChangeAnimationState(ALI_ATTACK_QP);
                     PlayerPunch();
                 }
                 Invoke("AttackComplete", attackDelay);
@@ -334,7 +352,10 @@ public class PlayerController : MonoBehaviour
 
             if (isBlockPressed)
             {
-                ChangeAnimationState(BOXER_BLOCK);
+                if(tag == "Player1")
+                    ChangeAnimationState(BOXER_BLOCK);
+                if (tag == "Player2")
+                    ChangeAnimationState(ALI_BLOCK);
             }
 
             // Jump Pressed
@@ -347,11 +368,36 @@ public class PlayerController : MonoBehaviour
                 isJumping = true;
                 playerRB.AddForce(Vector2.up * jumpVel, ForceMode2D.Impulse);
                 isJumpPressed = false;
-                ChangeAnimationState(BOXER_JUMP);
+                if (tag == "Player1")
+                    ChangeAnimationState(BOXER_JUMP);
+                if (tag == "Player2"){
+                    ChangeAnimationState(ALI_JUMP);
+                }
             }
-            if (!isJumpPressed && !isLeftPressed && !isRightPressed && !isBlockPressed && !isFalling && !isAttacking && !isHeavyAttacking && !isDamaged)
+
+            if (isJumpAttackPressed && isJumping && tag == "Player2")
             {
-                ChangeAnimationState(BOXER_IDLE);
+                isJumpAttackPressed = false;
+                isJumpAttacking = true;
+                ChangeAnimationState(ALI_ATTACK_JUMP);
+                PlayerPunch();
+
+                isHeavyAttackPressed = false;
+                if (!isJumpAttacking)
+                {
+                    isJumpAttacking = true;
+                    ChangeAnimationState(ALI_ATTACK_JUMP);
+                    PlayerPunch();
+                }
+                Invoke("AttackJumpComplete", attackDelay * 2 - 0.4f);
+            }
+
+            if (!isJumpPressed && !isLeftPressed && !isRightPressed && !isBlockPressed && !isFalling && !isAttacking && !isHeavyAttacking && !isDamaged && !isJumpAttacking)
+            {
+                if (tag == "Player1")
+                    ChangeAnimationState(BOXER_IDLE);
+                if (tag == "Player2")
+                    ChangeAnimationState(ALI_IDLE);
             }
         }
         else
@@ -361,7 +407,10 @@ public class PlayerController : MonoBehaviour
                 playerRB.gravityScale = fallVel;
                 isFalling = true;
                 isJumping = false;
-                ChangeAnimationState(BOXER_FALL);
+                if (tag == "Player1")
+                    ChangeAnimationState(BOXER_FALL);
+                if (tag == "Player2")
+                    ChangeAnimationState(ALI_FALL);
             }
         }
 
@@ -377,6 +426,11 @@ public class PlayerController : MonoBehaviour
     void HeavyAttackComplete()
     {
         isHeavyAttacking = false;
+    }
+
+    void AttackJumpComplete()
+    {
+        isJumpAttacking = false;
     }
 
     public void HandleInputs()
@@ -452,6 +506,12 @@ public class PlayerController : MonoBehaviour
                 isJumpPressed = true;
             }
             else isJumpPressed = false;
+
+            if (Input.GetKey(KeyCode.KeypadPlus))
+            {
+                isJumpAttackPressed = true;
+            }
+            else isJumpAttackPressed = false;
         }
     }
 }
