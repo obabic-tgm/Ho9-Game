@@ -20,7 +20,7 @@ public class BackgroundScript : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        result = (int) Random.Range(0, 3);
+        result = (int) Random.Range(1, 3);
     }
 
     // Update is called once per frame
